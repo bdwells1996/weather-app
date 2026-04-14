@@ -1,3 +1,5 @@
+import { cacheLife } from 'next/cache';
+
 export interface GeoLocation {
   name: string;
   latitude: number;
@@ -16,6 +18,7 @@ export interface DailyForecast {
   date: string;
   maxTemperature: number;
   minTemperature: number;
+  weatherCode: number;
 }
 
 export interface WeatherData {
@@ -35,8 +38,10 @@ export class WeatherError extends Error {
 }
 
 async function geocodeCity(city: string): Promise<GeoLocation> {
+  'use cache'
+  cacheLife('hours')
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new WeatherError(`Geocoding request failed: ${res.status}`, "FETCH_FAILED");
@@ -63,16 +68,18 @@ async function fetchForecast(
   longitude: number,
   timezone: string
 ): Promise<{ current: CurrentWeather; daily: DailyForecast[] }> {
+  'use cache'
+  cacheLife('minutes')
   const params = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),
     current: "temperature_2m,weathercode,wind_speed_10m",
-    daily: "temperature_2m_max,temperature_2m_min",
+    daily: "temperature_2m_max,temperature_2m_min,weathercode",
     timezone,
   });
 
   const url = `https://api.open-meteo.com/v1/forecast?${params}`;
-  const res = await fetch(url, { next: { revalidate: 900 } });
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new WeatherError(`Forecast request failed: ${res.status}`, "FETCH_FAILED");
@@ -91,10 +98,32 @@ async function fetchForecast(
       date,
       maxTemperature: data.daily.temperature_2m_max[i],
       minTemperature: data.daily.temperature_2m_min[i],
+      weatherCode: data.daily.weathercode[i],
     })
   );
 
   return { current, daily };
+}
+
+/**
+ * Returns up to `count` geocoding results for a partial city name.
+ * Intended for autocomplete / search suggestions.
+ */
+export async function searchCities(query: string, count = 5): Promise<GeoLocation[]> {
+  'use cache';
+  cacheLife('hours');
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=${count}`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const data = await res.json();
+  if (!data.results?.length) return [];
+  return data.results.map((r: Record<string, unknown>) => ({
+    name: r.name as string,
+    latitude: r.latitude as number,
+    longitude: r.longitude as number,
+    country: r.country as string,
+    timezone: r.timezone as string,
+  }));
 }
 
 /**
