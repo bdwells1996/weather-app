@@ -1,11 +1,11 @@
 import Link from "next/link";
 
+import { WeatherBentoHeader } from "@/components/WeatherResult/WeatherBentoHeader";
+import { WeatherForecastRow } from "@/components/WeatherResult/WeatherForecastRow";
 import { getWeatherForCity, WeatherError } from "@/lib/weather";
-import { WeatherDisplay } from "./_components/WeatherDisplay";
-import { WeatherProvider } from "./_context/WeatherContext";
 
-export default async function CityWeatherPage(props: PageProps<"/weather/[city]">) {
-	const { city } = await props.params;
+async function WeatherData({ params }: { params: Promise<{ city: string }> }) {
+	const { city } = await params;
 	const decodedCity = decodeURIComponent(city);
 
 	let weather = null;
@@ -21,18 +21,25 @@ export default async function CityWeatherPage(props: PageProps<"/weather/[city]"
 	}
 
 	return (
+		<div className="flex flex-col gap-6">
+			<WeatherBentoHeader weather={weather} error={error} />
+			{weather && <WeatherForecastRow weather={weather} />}
+		</div>
+	);
+}
+
+export default function CityWeatherPage(props: PageProps<"/weather/[city]">) {
+	return (
 		<main className="flex flex-1 flex-col items-center px-4 py-8 gap-6">
 			<div className="w-full max-w-4xl">
 				<Link
 					href="/"
-					className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground-muted hover:text-foreground transition-colors"
+					className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-foreground-muted transition-colors"
 				>
 					&larr; Back to search
 				</Link>
 
-				<WeatherProvider weather={weather} error={error}>
-					<WeatherDisplay />
-				</WeatherProvider>
+				<WeatherData params={props.params} />
 			</div>
 		</main>
 	);

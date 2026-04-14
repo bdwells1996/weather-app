@@ -15,7 +15,7 @@ export function WeatherForecastRow({ weather }: { weather: WeatherData }) {
 
 	return (
 		<section>
-			<h3 className="text-sm font-bold text-foreground-muted uppercase tracking-wide mb-3">
+			<h3 className="text-sm font-bold text-foreground uppercase tracking-wide mb-3">
 				7-Day Forecast
 			</h3>
 			<div className="grid grid-cols-1 gap-2 md:grid-cols-7">

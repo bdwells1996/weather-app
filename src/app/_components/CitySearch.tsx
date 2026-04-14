@@ -87,6 +87,7 @@ export function CitySearch() {
                 onClick={() => {
                   setOpen(false);
                   setQuery("");
+                  setResults([]);
                 }}
               >
                 <span className="font-semibold text-foreground">{city.name}</span>

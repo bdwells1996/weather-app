@@ -1,6 +1,7 @@
 import type { WeatherData } from "@/lib/weather";
 import { describeWeatherCode, getWeatherState } from "@/lib/weatherCodes";
 import { Badge } from "@/components/ui/Badge/Badge";
+import { FavouriteButton } from "@/components/FavouriteButton/FavouriteButton";
 import {
 	WeatherIllustration,
 	WEATHER_STATE_GRADIENT,
@@ -39,7 +40,7 @@ export function WeatherBentoHeader({
 
 	return (
 		<div
-			className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-6 flex flex-col justify-between min-h-50 md:p-8 md:min-h-58`}
+			className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} py-6 px-4 flex flex-col justify-between min-h-50 md:p-8 md:min-h-58`}
 		>
 			<WeatherIllustration state={state} />
 
@@ -53,23 +54,24 @@ export function WeatherBentoHeader({
 					</div>
 					<p className="text-white/70 text-sm">{formatToday()}</p>
 				</div>
+				<FavouriteButton city={{ name: location.name, country: location.country }} />
 			</div>
 
-			<div className="relative z-10 grid grid-cols-3 gap-3 mt-6">
-				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3">
+			<div className="relative z-10 grid grid-cols-12 gap-2 mt-6 md:gap-3">
+				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3 col-span-6 md:col-span-4">
 					<p className="text-3xl font-black text-white">
 						{Math.round(current.temperature)}°
 					</p>
 					<p className="text-xs text-white/70 mt-0.5">Temperature</p>
 				</div>
-				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3">
+				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3 col-span-6 md:col-span-4">
 					<p className="flex items-end gap-1 text-3xl font-black text-white">
 						{Math.round(current.windSpeed)}
 						<span className="text-sm font-semibold pb-1"> km/h</span>
 					</p>
 					<p className="text-xs text-white/70 mt-0.5">Wind</p>
 				</div>
-				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3 flex flex-col">
+				<div className="rounded-xl bg-white/15 backdrop-blur-sm px-4 py-3 flex flex-col col-span-12 md:col-span-4">
 					<p className="text-base font-bold text-white leading-tight pt-1">
 						{condition.label}
 					</p>
