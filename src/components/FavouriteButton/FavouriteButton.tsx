@@ -6,7 +6,7 @@ import type { FavouriteCity } from "@/lib/favourites";
 
 export function FavouriteButton({ city }: { city: FavouriteCity }) {
 	const { isFavourite, toggle } = useFavourites();
-	const saved = isFavourite(city.name);
+	const saved = isFavourite(city);
 	const [anim, setAnim] = useState<"idle" | "pressed" | "bounce">("idle");
 
 	function handleClick() {

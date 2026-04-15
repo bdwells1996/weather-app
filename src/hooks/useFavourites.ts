@@ -15,18 +15,19 @@ export function useFavourites() {
 	}, []);
 
 	const isFavourite = useCallback(
-		(name: string) =>
+		(city: FavouriteCity) =>
 			favourites.some(
-				(f) => f.name.toLowerCase() === name.toLowerCase(),
+				(f) => f.latitude === city.latitude && f.longitude === city.longitude,
 			),
 		[favourites],
 	);
 
 	const toggle = useCallback(
 		(city: FavouriteCity) => {
-			const next = isFavourite(city.name)
+			const next = isFavourite(city)
 				? favourites.filter(
-						(f) => f.name.toLowerCase() !== city.name.toLowerCase(),
+						(f) =>
+							!(f.latitude === city.latitude && f.longitude === city.longitude),
 					)
 				: [...favourites, city];
 			saveFavourites(next);

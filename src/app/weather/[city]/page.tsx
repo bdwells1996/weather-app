@@ -2,17 +2,34 @@ import Link from "next/link";
 
 import { WeatherBentoHeader } from "@/components/WeatherResult/WeatherBentoHeader";
 import { WeatherForecastRow } from "@/components/WeatherResult/WeatherForecastRow";
-import { getWeatherForCity, WeatherError } from "@/lib/weather";
+import { getWeatherForCity, getWeatherByCoords, WeatherError } from "@/lib/weather";
 
-async function WeatherData({ params }: { params: Promise<{ city: string }> }) {
+async function WeatherData({
+	params,
+	searchParams,
+}: {
+	params: Promise<{ city: string }>;
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
 	const { city } = await params;
+	const sp = await searchParams;
 	const decodedCity = decodeURIComponent(city);
 
 	let weather = null;
 	let error = null;
 
+	const lat = typeof sp.lat === "string" ? parseFloat(sp.lat) : NaN;
+	const lon = typeof sp.lon === "string" ? parseFloat(sp.lon) : NaN;
+	const tz = typeof sp.tz === "string" ? sp.tz : "";
+	const country = typeof sp.country === "string" ? sp.country : "";
+	const region = typeof sp.region === "string" ? sp.region : undefined;
+
 	try {
-		weather = await getWeatherForCity(decodedCity);
+		if (!isNaN(lat) && !isNaN(lon) && tz && country) {
+			weather = await getWeatherByCoords(decodedCity, country, lat, lon, tz, region);
+		} else {
+			weather = await getWeatherForCity(decodedCity);
+		}
 	} catch (err) {
 		error =
 			err instanceof WeatherError && err.code === "CITY_NOT_FOUND"
@@ -39,7 +56,7 @@ export default function CityWeatherPage(props: PageProps<"/weather/[city]">) {
 					&larr; Back to search
 				</Link>
 
-				<WeatherData params={props.params} />
+				<WeatherData params={props.params} searchParams={props.searchParams} />
 			</div>
 		</main>
 	);

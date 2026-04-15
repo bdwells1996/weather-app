@@ -49,12 +49,21 @@ export function WeatherBentoHeader({
 					<div className="flex items-center gap-2 mb-1">
 						<h2 className="text-white text-2xl font-black">{location.name}</h2>
 						<Badge className="bg-white/20 text-white ring-white/30">
-							{location.country}
+							{location.region ? `${location.region}, ${location.country}` : location.country}
 						</Badge>
 					</div>
 					<p className="text-white/70 text-sm">{formatToday()}</p>
 				</div>
-				<FavouriteButton city={{ name: location.name, country: location.country }} />
+				<FavouriteButton
+					city={{
+						name: location.name,
+						country: location.country,
+						region: location.region,
+						latitude: location.latitude,
+						longitude: location.longitude,
+						timezone: location.timezone,
+					}}
+				/>
 			</div>
 
 			<div className="relative z-10 grid grid-cols-12 gap-2 mt-6 md:gap-3">

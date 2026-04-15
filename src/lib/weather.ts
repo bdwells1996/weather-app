@@ -5,6 +5,7 @@ export interface GeoLocation {
   latitude: number;
   longitude: number;
   country: string;
+  region?: string;
   timezone: string;
 }
 
@@ -59,6 +60,7 @@ async function geocodeCity(city: string): Promise<GeoLocation> {
     latitude: result.latitude,
     longitude: result.longitude,
     country: result.country,
+    region: result.admin1 ?? undefined,
     timezone: result.timezone,
   };
 }
@@ -122,6 +124,7 @@ export async function searchCities(query: string, count = 5): Promise<GeoLocatio
     latitude: r.latitude as number,
     longitude: r.longitude as number,
     country: r.country as string,
+    region: r.admin1 as string | undefined,
     timezone: r.timezone as string,
   }));
 }
@@ -138,5 +141,23 @@ export async function getWeatherForCity(city: string): Promise<WeatherData> {
     location.timezone
   );
 
+  return { location, current, daily };
+}
+
+/**
+ * Fetches weather using known coordinates, bypassing geocoding.
+ * Use this when lat/lon are already known (e.g. from search results) to
+ * avoid ambiguity when multiple cities share the same name.
+ */
+export async function getWeatherByCoords(
+  name: string,
+  country: string,
+  latitude: number,
+  longitude: number,
+  timezone: string,
+  region?: string
+): Promise<WeatherData> {
+  const location: GeoLocation = { name, country, latitude, longitude, timezone, region };
+  const { current, daily } = await fetchForecast(latitude, longitude, timezone);
   return { location, current, daily };
 }
