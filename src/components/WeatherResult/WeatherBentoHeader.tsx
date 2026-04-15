@@ -6,6 +6,7 @@ import {
 	WeatherIllustration,
 	WEATHER_STATE_GRADIENT,
 } from "./WeatherIllustration";
+import { RefreshButton } from "./RefreshButton";
 
 function formatToday() {
 	return new Date().toLocaleDateString("en-GB", {
@@ -54,16 +55,19 @@ export function WeatherBentoHeader({
 					</div>
 					<p className="text-white/70 text-sm">{formatToday()}</p>
 				</div>
-				<FavouriteButton
-					city={{
-						name: location.name,
-						country: location.country,
-						region: location.region,
-						latitude: location.latitude,
-						longitude: location.longitude,
-						timezone: location.timezone,
-					}}
-				/>
+				<div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl px-3 py-2">
+					<RefreshButton latitude={location.latitude} longitude={location.longitude} />
+					<FavouriteButton
+						city={{
+							name: location.name,
+							country: location.country,
+							region: location.region,
+							latitude: location.latitude,
+							longitude: location.longitude,
+							timezone: location.timezone,
+						}}
+					/>
+				</div>
 			</div>
 
 			<div className="relative z-10 grid grid-cols-12 gap-2 mt-6 md:gap-3">

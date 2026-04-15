@@ -1,4 +1,4 @@
-import { cacheLife } from 'next/cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export interface GeoLocation {
   name: string;
@@ -38,9 +38,13 @@ export class WeatherError extends Error {
   }
 }
 
+// Geocoding results are stable — city coordinates rarely change.
+// 'hours' profile: revalidates in the background every 1h, expires after 1d.
+// Tagged so a specific city's entry can be force-invalidated via revalidateTag().
 async function geocodeCity(city: string): Promise<GeoLocation> {
   'use cache'
   cacheLife('hours')
+  cacheTag(`geocode:${city.toLowerCase()}`)
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
   const res = await fetch(url);
 
@@ -65,6 +69,9 @@ async function geocodeCity(city: string): Promise<GeoLocation> {
   };
 }
 
+// Forecast data changes frequently — 'minutes' profile revalidates every 1m
+// in the background (stale-while-revalidate), hard expires after 1h.
+// Tagged by coordinates so per-city cache entries can be invalidated independently.
 async function fetchForecast(
   latitude: number,
   longitude: number,
@@ -72,6 +79,7 @@ async function fetchForecast(
 ): Promise<{ current: CurrentWeather; daily: DailyForecast[] }> {
   'use cache'
   cacheLife('minutes')
+  cacheTag(`forecast:${latitude},${longitude}`)
   const params = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),
@@ -110,10 +118,14 @@ async function fetchForecast(
 /**
  * Returns up to `count` geocoding results for a partial city name.
  * Intended for autocomplete / search suggestions.
+ *
+ * 'hours' profile: same rationale as geocodeCity — search results are stable.
+ * Tagged by query so individual autocomplete results can be invalidated if needed.
  */
 export async function searchCities(query: string, count = 5): Promise<GeoLocation[]> {
   'use cache';
   cacheLife('hours');
+  cacheTag(`search:${query.toLowerCase()}`);
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=${count}`;
   const res = await fetch(url);
   if (!res.ok) return [];
