@@ -1,17 +1,21 @@
-import { type InputHTMLAttributes, useId } from "react";
 import clsx from "clsx";
+import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   hint?: string;
   error?: string;
+  endAdornment?: ReactNode;
+  containerClassName?: string;
 }
 
 export function Input({
   label,
   hint,
   error,
+  endAdornment,
   className,
+  containerClassName,
   id: idProp,
   ...props
 }: InputProps) {
@@ -28,20 +32,28 @@ export function Input({
           {label}
         </label>
       )}
-      <input
-        id={id}
-        {...props}
-        className={clsx(
-          "w-full rounded-lg border bg-surface-raised px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground-subtle",
-          "transition-colors duration-150",
-          "focus:outline-none focus:ring-2 focus:ring-offset-0",
-          error
-            ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-            : "border-surface-border focus:border-purple-500 focus:ring-purple-500/20",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          className,
+      <div className={clsx("relative flex items-center", containerClassName)}>
+        <input
+          id={id}
+          {...props}
+          className={clsx(
+            "w-full rounded-lg border bg-surface-raised py-2.5 text-sm text-foreground placeholder:text-foreground-subtle",
+            endAdornment ? "pl-3.5 pr-9" : "px-3.5",
+            "transition-colors duration-150",
+            "focus:outline-none focus:ring-2 focus:ring-offset-0",
+            error
+              ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+              : "border-surface-border focus:border-purple-500 focus:ring-purple-500/20",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            className,
+          )}
+        />
+        {endAdornment && (
+          <span className="absolute right-3 flex items-center text-foreground-subtle">
+            {endAdornment}
+          </span>
         )}
-      />
+      </div>
       {(hint || error) && (
         <p
           className={clsx(

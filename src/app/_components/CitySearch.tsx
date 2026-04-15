@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import Link from "next/link";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/Input/Input";
 import type { GeoLocation } from "@/lib/weather";
 
@@ -30,7 +31,10 @@ export function CitySearch() {
 
 	useEffect(() => {
 		function handleClickOutside(e: MouseEvent) {
-			if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+			if (
+				containerRef.current &&
+				!containerRef.current.contains(e.target as Node)
+			) {
 				setOpen(false);
 			}
 		}
@@ -67,6 +71,21 @@ export function CitySearch() {
 				aria-label="City search"
 				aria-autocomplete="list"
 				aria-expanded={open}
+				endAdornment={
+					query ? (
+						<button
+							type="button"
+							onClick={clearSearch}
+							aria-label="Clear search"
+							className="flex items-center text-foreground-subtle cursor-pointer hover:text-foreground transition-colors"
+						>
+							<X size={16} />
+						</button>
+					) : (
+						<Search size={16} className="pointer-events-none" />
+					)
+				}
+				containerClassName="md:max-w-[380px]"
 			/>
 
 			{loading && query.length >= 2 && (
@@ -84,9 +103,13 @@ export function CitySearch() {
 								className="flex items-center justify-between px-4 py-3 text-sm hover:bg-surface-raised transition-colors"
 								onClick={clearSearch}
 							>
-								<span className="font-semibold text-foreground">{city.name}</span>
+								<span className="font-semibold text-foreground">
+									{city.name}
+								</span>
 								<span className="text-foreground-subtle">
-									{city.region ? `${city.region}, ${city.country}` : city.country}
+									{city.region
+										? `${city.region}, ${city.country}`
+										: city.country}
 								</span>
 							</Link>
 						</li>

@@ -12,7 +12,7 @@ export default function Home() {
 			<div className="w-full max-w-4xl">
 				<Suspense fallback={<BentoHeaderSkeleton />}>
 					<WeatherSearchHeader />
-					<FavouritesList title="Your Favourites" />
+					<FavouritesList title="Or check your favourites" />
 				</Suspense>
 			</div>
 		</main>
