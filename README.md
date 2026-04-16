@@ -182,10 +182,7 @@ All query params are optional. If omitted, the city name is geocoded server-side
 | Favourites persistence | localStorage only | Data is device-local; lost on clear, not synced across browsers |
 | Theme hydration | Inline `<script>` in `<head>` | Feels hacky; blocking script before React loads |
 | Favourites hydration | `useEffect` sync after mount | Anti-pattern; causes a render cycle after hydration |
-| Weather API | Open-Meteo (free, no key) | No SLA guarantees; limited control over uptime or rate limits |
 | Caching | Next.js `'use cache'` (experimental) | API is still evolving; behaviour may change across Next.js versions |
-| Testing | Shallow component tests only | Business logic and user flows lack coverage; no E2E tests |
-| State management | localStorage + React context | Doesn't scale to cross-device sync or server-side user preferences |
 
 ---
 
@@ -199,5 +196,3 @@ Given more time, these are the areas I'd address first:
 - **Hourly forecast** — the Open-Meteo API returns hourly data; surfacing a 24-hour breakdown alongside the 7-day view would add meaningful value with minimal extra fetching
 - **Geolocation** — detect the user's current location on first visit and show local weather without requiring a search
 - **Offline support** — add a service worker to cache the last-viewed forecast so the app is usable without a network connection
-- **Error monitoring** — integrate Sentry or similar to capture fetch failures and cache misses in production
-- **Accessibility audit** — run a proper screen-reader pass; ARIA attributes are in place but haven't been tested end-to-end with assistive technology
