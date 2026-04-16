@@ -11,12 +11,22 @@ const ThemeContext = createContext<{
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	// Initialize from DOM class so we stay in sync with the inline no-flash script
-	const [theme, setTheme] = useState<Theme>("light");
+	const [theme, setTheme] = useState<Theme>(() => {
+		if (typeof window !== "undefined") {
+			return document.documentElement.classList.contains("dark") ? "dark" : "light";
+		}
+		return "light";
+	});
 
 	useEffect(() => {
+		// Re-sync in case the DOM changed between render and hydration
 		const isDark = document.documentElement.classList.contains("dark");
-		setTheme(isDark ? "dark" : "light");
-	}, []);
+		const currentTheme = isDark ? "dark" : "light";
+		if (theme !== currentTheme) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setTheme(currentTheme);
+		}
+	}, [theme]);
 
 	const toggle = () => {
 		setTheme((prev) => {

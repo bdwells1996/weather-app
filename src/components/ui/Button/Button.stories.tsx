@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { Search, Heart, RefreshCw } from "lucide-react";
 import { Button } from "./Button";
 
 const meta = {
@@ -15,7 +16,7 @@ const meta = {
     },
     size: {
       control: "select",
-      options: ["sm", "md", "lg"],
+      options: ["sm", "md", "lg", "none"],
     },
     disabled: { control: "boolean" },
     fullWidth: { control: "boolean" },
@@ -83,6 +84,22 @@ export const AllVariants: Story = {
       <Button variant="secondary">Secondary</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="destructive">Destructive</Button>
+    </div>
+  ),
+};
+
+export const IconOnly: Story = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <Button variant="ghost">
+        <Search size={16} />
+      </Button>
+      <Button variant="ghost">
+        <Heart size={16} />
+      </Button>
+      <Button variant="ghost">
+        <RefreshCw size={16} />
+      </Button>
     </div>
   ),
 };

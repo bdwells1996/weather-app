@@ -22,7 +22,7 @@ export const TypeScale: Story = {
       </div>
       <div>
         <p className="text-xs text-gray-400 mb-1 font-mono">text-3xl · font-700</p>
-        <p className="text-3xl font-bold text-gray-900">Today's Forecast</p>
+        <p className="text-3xl font-bold text-gray-900">Today&apos;s Forecast</p>
       </div>
       <div>
         <p className="text-xs text-gray-400 mb-1 font-mono">text-xl · font-600</p>

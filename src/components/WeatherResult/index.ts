@@ -4,5 +4,4 @@ export {
 } from "./WeatherBentoHeader";
 export { WeatherForecastRow, ForecastRowSkeleton } from "./WeatherForecastRow";
 export { WeatherIllustration } from "./WeatherIllustration";
-export { WeatherResultSkeleton } from "./WeatherResultSkeleton";
 export { WeatherSearchHeader } from "./WeatherSearchHeader";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { Card, CardHeader, CardTitle, CardBody, CardFooter } from "./Card";
+import { Card, CardBody } from "./Card";
 import { Button } from "../Button/Button";
 import { Badge } from "../Badge/Badge";
 
@@ -33,18 +33,18 @@ export const Default: Story = {
   args,
   render: (storyArgs) => (
     <Card accent={storyArgs.accent} elevated={storyArgs.elevated} interactive={storyArgs.interactive}>
-      <CardHeader>
-        <CardTitle>Sydney, AU</CardTitle>
+      <div className="mb-4 flex items-start justify-between">
+        <h3 className="text-lg font-bold text-foreground leading-tight">Sydney, AU</h3>
         <Badge variant="green">Clear</Badge>
-      </CardHeader>
+      </div>
       <CardBody>
         Sunny skies throughout the day with a high of 24°C and light northerly
         winds.
       </CardBody>
-      <CardFooter>
+      <div className="mt-5 flex items-center gap-3">
         <Button size="sm" variant="primary">View Forecast</Button>
         <Button size="sm" variant="ghost">Save</Button>
-      </CardFooter>
+      </div>
     </Card>
   ),
 };
@@ -53,17 +53,17 @@ export const Accented: Story = {
   args,
   render: () => (
     <Card accent>
-      <CardHeader>
-        <CardTitle>Tokyo, JP</CardTitle>
+      <div className="mb-4 flex items-start justify-between">
+        <h3 className="text-lg font-bold text-foreground leading-tight">Tokyo, JP</h3>
         <Badge variant="blue">Rainy</Badge>
-      </CardHeader>
+      </div>
       <CardBody>
         Expect heavy rainfall through the morning with clearing skies in the
         afternoon. High of 18°C.
       </CardBody>
-      <CardFooter>
+      <div className="mt-5 flex items-center gap-3">
         <Button size="sm" variant="primary">View Forecast</Button>
-      </CardFooter>
+      </div>
     </Card>
   ),
 };
@@ -72,10 +72,10 @@ export const Elevated: Story = {
   args,
   render: () => (
     <Card elevated>
-      <CardHeader>
-        <CardTitle>New York, US</CardTitle>
+      <div className="mb-4 flex items-start justify-between">
+        <h3 className="text-lg font-bold text-foreground leading-tight">New York, US</h3>
         <Badge variant="yellow">Partly Cloudy</Badge>
-      </CardHeader>
+      </div>
       <CardBody>
         A mix of sun and clouds with temperatures reaching 21°C. Light winds
         from the southwest.
@@ -88,10 +88,10 @@ export const Interactive: Story = {
   args,
   render: () => (
     <Card interactive elevated>
-      <CardHeader>
-        <CardTitle>London, UK</CardTitle>
+      <div className="mb-4 flex items-start justify-between">
+        <h3 className="text-lg font-bold text-foreground leading-tight">London, UK</h3>
         <Badge variant="gray">Overcast</Badge>
-      </CardHeader>
+      </div>
       <CardBody>Click this card to view the full weekly forecast.</CardBody>
     </Card>
   ),
@@ -116,10 +116,10 @@ export const WeatherGrid: Story = {
         { city: "New York, US", condition: "Partly Cloudy", variant: "yellow" as const, desc: "Mixed, 21°C" },
       ].map(({ city, condition, variant, desc }) => (
         <Card key={city} interactive elevated>
-          <CardHeader>
-            <CardTitle>{city}</CardTitle>
+          <div className="mb-4 flex items-start justify-between">
+            <h3 className="text-lg font-bold text-foreground leading-tight">{city}</h3>
             <Badge variant={variant}>{condition}</Badge>
-          </CardHeader>
+          </div>
           <CardBody>{desc}</CardBody>
         </Card>
       ))}

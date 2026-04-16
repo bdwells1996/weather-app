@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { refreshWeather } from "@/app/weather/[city]/actions";
+import { Button } from "@/components/ui/Button/Button";
 
 export function RefreshButton({
 	latitude,
@@ -22,12 +23,13 @@ export function RefreshButton({
 	}
 
 	return (
-		<button
+		<Button
 			onClick={handleClick}
 			disabled={isPending}
 			type="button"
+			variant="ghost"
 			aria-label="Refresh the current weather result"
-			className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:opacity-60 disabled:cursor-not-allowed"
+			className="p-0 focus-visible:ring-white/50"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -45,6 +47,6 @@ export function RefreshButton({
 				<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
 				<path d="M8 16H3v5" />
 			</svg>
-		</button>
+		</Button>
 	);
 }

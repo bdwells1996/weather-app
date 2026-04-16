@@ -5,6 +5,7 @@ import { useDebouncedCallback } from "use-debounce";
 import Link from "next/link";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/Input/Input";
+import { Button } from "@/components/ui/Button/Button";
 import type { GeoLocation } from "@/lib/weather";
 
 export function CitySearch() {
@@ -73,14 +74,14 @@ export function CitySearch() {
 				aria-expanded={open}
 				endAdornment={
 					query ? (
-						<button
+						<Button
 							type="button"
 							onClick={clearSearch}
 							aria-label="Clear search"
-							className="flex items-center text-foreground-subtle cursor-pointer hover:text-foreground transition-colors"
+							className="text-foreground-subtle hover:text-foreground"
 						>
 							<X size={16} />
-						</button>
+						</Button>
 					) : (
 						<Search size={16} className="pointer-events-none" />
 					)

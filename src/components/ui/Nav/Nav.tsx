@@ -7,6 +7,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "./nav-links";
+import { Button } from "@/components/ui/Button/Button";
 
 const ThemeToggle = dynamic(
 	() =>
@@ -62,9 +63,9 @@ export default function Nav() {
 					</ul>
 					<ThemeToggle />
 					{/* Hamburger button */}
-					<button
+					<Button
 						type="button"
-						className="sm:hidden flex items-center justify-center rounded-lg p-2 text-foreground-muted hover:bg-surface-raised hover:text-foreground transition-colors"
+						className="sm:hidden text-foreground-muted"
 						aria-label={menuOpen ? "Close menu" : "Open menu"}
 						aria-expanded={menuOpen}
 						onClick={() => setMenuOpen((v) => !v)}
@@ -74,7 +75,7 @@ export default function Nav() {
 						) : (
 							<Menu size={20} aria-hidden="true" />
 						)}
-					</button>
+					</Button>
 				</div>
 			</div>
 

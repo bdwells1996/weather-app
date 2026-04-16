@@ -34,39 +34,6 @@ export function Card({
   );
 }
 
-export function CardHeader({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={clsx("mb-4 flex items-start justify-between", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function CardTitle({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <h3
-      className={clsx(
-        "text-lg font-bold text-foreground leading-tight",
-        className,
-      )}
-    >
-      {children}
-    </h3>
-  );
-}
-
 export function CardBody({
   children,
   className,
@@ -76,20 +43,6 @@ export function CardBody({
 }) {
   return (
     <div className={clsx("text-sm text-foreground-muted leading-relaxed", className)}>
-      {children}
-    </div>
-  );
-}
-
-export function CardFooter({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={clsx("mt-5 flex items-center gap-3", className)}>
       {children}
     </div>
   );
