@@ -17,11 +17,21 @@ export function CitySearch() {
 
 	const fetchSuggestions = useDebouncedCallback((value: string) => {
 		setLoading(true);
-		fetch(`/api/city-suggestions?q=${encodeURIComponent(value)}`)
+		fetch(
+			`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(value)}&count=5`,
+		)
 			.then((r) => r.json())
-			.then((data: GeoLocation[]) => {
-				setResults(data);
-				setOpen(data.length > 0);
+			.then((data: { results?: Record<string, unknown>[] }) => {
+				const results: GeoLocation[] = (data.results ?? []).map((r) => ({
+					name: r.name as string,
+					latitude: r.latitude as number,
+					longitude: r.longitude as number,
+					country: r.country as string,
+					region: r.admin1 as string | undefined,
+					timezone: r.timezone as string,
+				}));
+				setResults(results);
+				setOpen(results.length > 0);
 				setLoading(false);
 			})
 			.catch(() => setLoading(false));

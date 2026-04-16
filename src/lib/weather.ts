@@ -122,25 +122,6 @@ async function fetchForecast(
  * 'hours' profile: same rationale as geocodeCity — search results are stable.
  * Tagged by query so individual autocomplete results can be invalidated if needed.
  */
-export async function searchCities(query: string, count = 5): Promise<GeoLocation[]> {
-  'use cache';
-  cacheLife('hours');
-  cacheTag(`search:${query.toLowerCase()}`);
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=${count}`;
-  const res = await fetch(url);
-  if (!res.ok) return [];
-  const data = await res.json();
-  if (!data.results?.length) return [];
-  return data.results.map((r: Record<string, unknown>) => ({
-    name: r.name as string,
-    latitude: r.latitude as number,
-    longitude: r.longitude as number,
-    country: r.country as string,
-    region: r.admin1 as string | undefined,
-    timezone: r.timezone as string,
-  }));
-}
-
 /**
  * Geocodes a city name then fetches current conditions and a 7-day forecast.
  * Safe to call from Server Components, Route Handlers, or any async context.
