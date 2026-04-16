@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/ui/Nav/Nav";
-import { ThemeProvider } from "./_components/ThemeProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const raleway = Raleway({
 	subsets: ["latin"],
@@ -22,7 +22,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={`${raleway.variable} h-full antialiased`} suppressHydrationWarning>
+		<html
+			lang="en"
+			className={`${raleway.variable} h-full antialiased`}
+			suppressHydrationWarning
+		>
 			<head>
 				{/* Inline script runs synchronously before paint to prevent flash */}
 				<script
@@ -33,7 +37,11 @@ export default function RootLayout({
 			</head>
 			<body className="min-h-full flex flex-col bg-background text-foreground">
 				<ThemeProvider>
-					<Suspense fallback={<nav className="h-[57px] border-b border-surface-border bg-surface" />}>
+					<Suspense
+						fallback={
+							<nav className="h-[57px] border-b border-surface-border bg-surface" />
+						}
+					>
 						<Nav />
 					</Suspense>
 					{children}

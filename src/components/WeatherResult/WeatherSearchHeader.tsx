@@ -1,4 +1,4 @@
-import { CitySearch } from "@/app/_components/CitySearch";
+import { CitySearch } from "@/components/CitySearch";
 import {
 	WeatherIllustration,
 	WEATHER_STATE_GRADIENT,
