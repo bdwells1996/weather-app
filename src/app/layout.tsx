@@ -30,6 +30,7 @@ export default function RootLayout({
 			<head>
 				{/* Inline script runs synchronously before paint to prevent flash */}
 				<script
+					/* biome-ignore lint/security/noDangerouslySetInnerHtml: false positive in this instance */
 					dangerouslySetInnerHTML={{
 						__html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})();`,
 					}}
