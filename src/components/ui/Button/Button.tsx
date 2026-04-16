@@ -12,13 +12,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary:
-		"bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800 border border-transparent focus-visible:ring-purple-500",
+		"bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800 border border-transparent cursor-pointer focus-visible:ring-purple-500",
 	secondary:
-		"bg-white text-purple-700 hover:bg-purple-50 active:bg-purple-100 border border-purple-300 focus-visible:ring-purple-500",
+		"bg-white text-purple-700 hover:bg-purple-50 active:bg-purple-100 border border-purple-300 cursor-pointer focus-visible:ring-purple-500",
 	ghost:
-		"bg-transparent text-purple-700 hover:bg-purple-50 active:bg-purple-100 border border-transparent focus-visible:ring-purple-500",
+		"bg-transparent text-purple-700 border border-transparent cursor-pointer focus-visible:ring-purple-500",
 	destructive:
-		"bg-red-600 text-white hover:bg-red-700 active:bg-red-800 border border-transparent focus-visible:ring-red-500",
+		"bg-red-600 text-white hover:bg-red-700 active:bg-red-800 border border-transparent cursor-pointer focus-visible:ring-red-500",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -52,7 +52,7 @@ export function Button({
 				"disabled:pointer-events-none disabled:opacity-50",
 				!isIconOnly && variantClasses[variant],
 				!isIconOnly && sizeClasses[size],
-				isIconOnly && "rounded-full p-2 hover:bg-surface-raised transition-colors",
+				isIconOnly && "rounded-full p-2 transition-colors",
 				fullWidth && "w-full",
 				className,
 			)}

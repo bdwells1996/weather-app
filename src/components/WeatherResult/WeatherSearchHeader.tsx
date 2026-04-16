@@ -11,9 +11,9 @@ export function WeatherSearchHeader() {
 		>
 			<WeatherIllustration state="idle" />
 			<div className="relative z-10 flex flex-col gap-4">
-				<h2 className="text-white text-3xl font-black">
+				<h1 className="text-white text-3xl font-black">
 					Search for a location to get started
-				</h2>
+				</h1>
 				<CitySearch />
 			</div>
 		</div>
