@@ -1,16 +1,21 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+	type FavouriteCity,
 	getFavourites,
 	saveFavourites,
-	type FavouriteCity,
 } from "@/lib/favourites";
 
 export function useFavourites() {
 	const [favourites, setFavourites] = useState<FavouriteCity[]>([]);
 
+	// Reading localStorage in a lazy useState initializer causes a hydration
+	// mismatch because the server renders with no localStorage. Deferring to
+	// an effect ensures the first render matches the server's empty state, then
+	// syncs with localStorage on the client after hydration.
 	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setFavourites(getFavourites());
 	}, []);
 
